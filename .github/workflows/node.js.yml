@@ -1,0 +1,36 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [20.17.0]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build the app
+      run: npm run build
+      #working-directory: /root/actions-runner-back-end/_work/Mandela-FontEnd/Mandela-FontEnd
+    
+    #- name: Install PM2 globally
+     # run: npm install -g pm2
+    
+    #- name: Start or restart PM2 process
+     # run: pm2 restart 0 || pm2 start npm --name "mandela" -- run dev --watch
+      #working-directory: /root/actions-runner-back-end/_work/Mandela-FontEnd/Mandela-FontEnd
