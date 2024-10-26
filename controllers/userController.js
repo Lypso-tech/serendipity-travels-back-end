@@ -53,9 +53,14 @@ exports.loginUser = async (req, res) => {
     }
 };
 
+// Controller to fetch all users
 exports.getUsers = async (req, res) => {
-    const users = await User.find();
-    res.json(users);
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
 exports.getUserById = async (req, res) => {
