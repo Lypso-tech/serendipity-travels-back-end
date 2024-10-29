@@ -1,4 +1,3 @@
-// apiRoutes.js
 const express = require("express");
 const multer = require("multer");
 const imageController = require("../controllers/imageController");
@@ -18,12 +17,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ImageStorage routes
-router.post("/images", upload.single("file"), imageController.uploadImage); // Upload a new image
-router.get("/images", imageController.getAllImages); // Get all images
-router.get("/images/:id", imageController.getImageById); // Get a specific image by ID
-router.put("/images/:id", imageController.updateImage); // Update an image's info by ID
-router.delete("/images/:id", imageController.deleteImage); // Delete an image by ID
+// Image routes
+router.post("/images", upload.single("file"), imageController.uploadImage);
+router.get("/images", imageController.getAllImages);
+router.get("/images/:id", imageController.getImageById);
+router.put("/images/:id", imageController.updateImage);
+router.delete("/images/:id", imageController.deleteImage);
 
 // Destination routes
 router.post(
@@ -33,7 +32,7 @@ router.post(
     { name: "coverImage", maxCount: 1 },
     { name: "backgroundImages", maxCount: 6 },
   ]),
-  async (req, res, next) => {
+  async (req, res) => {
     try {
       await destinationController.createDestination(req, res);
     } catch (error) {
@@ -41,11 +40,26 @@ router.post(
       res.status(500).json({ error: error.message });
     }
   }
-); // Create a new destination
+);
 
-router.get("/destinations", destinationController.getAllDestinations); // Get all destinations
-router.get("/destinations/:id", destinationController.getDestinationById); // Get a specific destination by ID
-router.put("/destinations/:id", destinationController.updateDestination); // Update a destination by ID
-router.delete("/destinations/:id", destinationController.deleteDestination); // Delete a destination by ID
+router.get("/destinations", destinationController.getAllDestinations);
+router.get("/destinations/:id", destinationController.getDestinationById);
+router.put(
+  "/destinations/:id",
+  upload.fields([
+    { name: "destinationImage", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+    { name: "backgroundImages", maxCount: 6 },
+  ]),
+  async (req, res) => {
+    try {
+      await destinationController.updateDestination(req, res);
+    } catch (error) {
+      console.error("Error updating destination:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+router.delete("/destinations/:id", destinationController.deleteDestination);
 
 module.exports = router;

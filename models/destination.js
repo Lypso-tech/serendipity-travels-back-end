@@ -6,7 +6,7 @@ const destinationSchema = new mongoose.Schema(
     destinationImage: {
       type: mongoose.Schema.Types.String,
       ref: "ImageStorage",
-    }, // Refers to an image stored in ImageStorage
+    }, 
     description: { type: String, required: true },
     headline: { type: String, required: true },
     coverImage: { type: mongoose.Schema.Types.String, ref: "ImageStorage" }, 
@@ -14,7 +14,7 @@ const destinationSchema = new mongoose.Schema(
     coverImageDescription: { type: String, required: true },
     backgroundImages: [
       { type: mongoose.Schema.Types.String, ref: "ImageStorage" },
-    ], // Array of image references
+    ], 
   },
   { timestamps: true }
 );
