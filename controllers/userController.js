@@ -131,18 +131,19 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     // Find user by ID
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id.trim()); // Ensures ID is properly trimmed if there's whitespace
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     // Remove user from the database
-    await user.remove();
+    await User.deleteOne({ _id: req.params.id });
 
     res.json({ message: "User removed successfully" });
   } catch (error) {
-    // Error handling
+    // Log and handle errors
+    console.error("Delete user error:", error.message);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
