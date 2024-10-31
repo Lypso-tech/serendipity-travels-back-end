@@ -9,6 +9,7 @@ const userRoutes = require("./routes/userRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const galleryRoutes = require("./routes/galleryRoutes");
 const travelPackageRouter = require("./routes/travelPackageRouter");
+const bookingRouter = require("./routes/bookingRouter");
 
 const errorHandler = require("./middleware/errorHandler");
 const logger = require("./middleware/logger");
@@ -43,6 +44,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/files", imageRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/travel", travelPackageRouter);
+app.use("/api/bookings" , bookingRouter);
 
 
 // Error handling middleware
